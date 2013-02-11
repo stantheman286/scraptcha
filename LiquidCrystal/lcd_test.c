@@ -15,6 +15,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 
 // include the library code:
@@ -23,38 +24,22 @@
 #include "wiringPi/wiringPi.h"
 #include "nodeSPI/spi.h"
 
-// Connect via SPI. Data pin is #3, Clock is #2 and Latch is #4
-//ms LiquidCrystal lcd(3, 2, 4);
-
 void lcdSetup(int fd) {
   // set up the LCD's number of rows and columns: 
   begin(fd, 16, 2, LCD_5x8DOTS);
-  cursor(fd);
   // Print a message to the LCD.
-//ms  print("hello, world!");
-
-  write(fd, 'H');
-  write(fd, 'e');
-  write(fd, 'l');
-  write(fd, 'l');
-  write(fd, 'o');
-  write(fd, ',');
-  write(fd, ' ');
-  write(fd, 'w');
-  write(fd, 'o');
-  write(fd, 'r');
-  write(fd, 'l');
-  write(fd, 'd');
-  write(fd, '!');
+  print(fd, "hello, world!");
 
 }
 
 void loop(int fd) {
+
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
   setCursor(fd, 0, 1);
-  // print the number of seconds since reset:
-//ms  print(millis()/1000);
+  // print the number of seconds since resets
+
+  print(fd, "*");
 
   setBacklight(fd, HIGH);
   delay(500);
@@ -65,8 +50,6 @@ void loop(int fd) {
 int main(void) {
 
   int fd = open("/dev/spidev0.1", O_RDWR);
-  uint8_t tx = 'M';
-  uint8_t rx;
 
   if (fd < 0) {
     printf("Could not open SPI device\n");
@@ -82,10 +65,7 @@ int main(void) {
   lcdSetup(fd);
   
   while(1)
-  {
-//    loop(fd);
-//    spiRW(fd, 1, &tx, &rx);
-  }
+    loop(fd);
 
 }
 

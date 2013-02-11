@@ -322,3 +322,12 @@ void write8bits(int fd, uint8_t value) {
   }
   pulseEnable(fd);
 }
+
+void print(int fd, char *s) {
+  
+  int i;
+
+  for(i = 0; i < strlen(s); i++)
+    write(fd, s[i]);
+
+}
