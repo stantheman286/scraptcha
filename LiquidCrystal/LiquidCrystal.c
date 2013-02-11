@@ -4,14 +4,9 @@
 #include <string.h>
 #include <inttypes.h>
 
+//ms: Additional libraries to support our Pi setup
 #include "wiringPi/wiringPi.h"
 #include "nodeSPI/spi.h"
-
-//#if ARDUINO >= 100
-// #include "Arduino.h"
-//#else
-// #include "WProgram.h"
-//#endif
 
 // When the display powers up, it is configured as follows:
 //
@@ -28,57 +23,8 @@
 //    I/D = 1; Increment by 1 
 //    S = 0; No shift 
 //
-// Note, however, that resetting the Arduino doesn't reset the LCD, so we
-// can't assume that its in that state when a sketch starts (and the
-// LiquidCrystal constructor is called).
 
-//ms LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
-//ms 			     uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-//ms 			     uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7)
-//ms {
-//ms   init(0, rs, rw, enable, d0, d1, d2, d3, d4, d5, d6, d7);
-//ms }
-//ms 
-//ms LiquidCrystal(uint8_t rs, uint8_t enable,
-//ms 			     uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-//ms 			     uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7)
-//ms {
-//ms   init(0, rs, 255, enable, d0, d1, d2, d3, d4, d5, d6, d7);
-//ms }
-//ms 
-//ms LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
-//ms 			     uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)
-//ms {
-//ms   init(1, rs, rw, enable, d0, d1, d2, d3, 0, 0, 0, 0);
-//ms }
-//ms 
-//ms LiquidCrystal(uint8_t rs,  uint8_t enable,
-//ms 			     uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)
-//ms {
-//ms   init(1, rs, 255, enable, d0, d1, d2, d3, 0, 0, 0, 0);
-//ms }
-//ms 
-//ms LiquidCrystal(uint8_t i2caddr) {
-//ms   _i2cAddr = i2caddr;
-//ms 
-//ms   _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
-//ms   
-//ms   // the I/O expander pinout
-//ms   _rs_pin = 1;
-//ms   _rw_pin = 255;
-//ms   _enable_pin = 2;
-//ms   _data_pins[0] = 3;  // really d4
-//ms   _data_pins[1] = 4;  // really d5
-//ms   _data_pins[2] = 5;  // really d6
-//ms   _data_pins[3] = 6;  // really d7
-//ms   
-//ms   // we can't begin() yet :(
-//ms }
-
-
-//ms LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch ) {
 void setup(int fd, uint8_t data, uint8_t clock, uint8_t latch ) {
-  _i2cAddr = 255;
 
   _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
   
@@ -95,10 +41,6 @@ void setup(int fd, uint8_t data, uint8_t clock, uint8_t latch ) {
   _SPIclock = clock;
   _SPIlatch = latch;
 
-//ms  pinMode(_SPIdata, OUTPUT);
-//ms  pinMode(_SPIclock, OUTPUT);
-//ms  pinMode(_SPIlatch, OUTPUT);
-//ms  _SPIbuff = 0;
   _SPIbuff_tx = 0;
 
   // we can't begin() yet :(
@@ -123,16 +65,8 @@ void init(int fd, uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
   _data_pins[6] = d6;
   _data_pins[7] = d7; 
 
-  _i2cAddr = 255;
   _SPIclock = _SPIdata = _SPIlatch = 255;
 
-//ms  pinMode(_rs_pin, OUTPUT);
-//ms  // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
-//ms  if (_rw_pin != 255) { 
-//ms    pinMode(_rw_pin, OUTPUT);
-//ms  }
-//ms  pinMode(_enable_pin, OUTPUT);
-  
   if (fourbitmode)
     _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
   else 
@@ -142,20 +76,7 @@ void init(int fd, uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
 }
 
 void begin(int fd, uint8_t cols, uint8_t lines, uint8_t dotsize) {
-  // check if i2c
-  if (_i2cAddr != 255) {
-//ms    _i2c.begin(_i2cAddr);
-
-//ms    _i2c.pinMode(7, OUTPUT); // backlight
-//ms    _i2c.digitalWrite(7, HIGH); // backlight
-
-//ms    for (uint8_t i=0; i<4; i++)
-//ms      _pinMode(_data_pins[i], OUTPUT);
-
-//ms    _i2c.pinMode(_rs_pin, OUTPUT);
-//ms    _i2c.pinMode(_enable_pin, OUTPUT);
-  } else if (_SPIclock != 255) {
-//ms    _SPIbuff = 0x80; // backlight
+  if (_SPIclock != 255) {
     _SPIbuff_tx = 0x80; // backlight
   }
 
@@ -335,60 +256,28 @@ inline void command(int fd, uint8_t value) {
   send(fd, value, LOW);
 }
 
-// #if ARDUINO >= 100
-// inline size_t write(uint8_t value) {
-//   send(value, HIGH);
-//   return 1;
-// }
-// #else
 inline void write(int fd, uint8_t value) {
   send(fd, value, HIGH);
 }
-// #endif
 
 /************ low level data pushing commands **********/
 
 // little wrapper for i/o writes
 void  _digitalWrite(int fd, uint8_t p, uint8_t d) {
-  if (_i2cAddr != 255) {
-    // an i2c command
-//ms    _i2c.digitalWrite(p, d);
-  } else if (_SPIclock != 255) {
+  if (_SPIclock != 255) {
     if (d == HIGH)
       _SPIbuff_tx |= (1 << p);
     else 
       _SPIbuff_tx &= ~(1 << p);
-
-//ms    digitalWrite(_SPIlatch, LOW);
-//ms    shiftOut(_SPIdata, _SPIclock, MSBFIRST,_SPIbuff);
-//ms    digitalWrite(_SPIlatch, HIGH);
-
-      spiRW(fd, 1, &_SPIbuff_tx, &_SPIbuff_rx);
-
-  } else {
-    // straightup IO
-//ms    digitalWrite(p, d);
+      spiRW(fd, 1, &_SPIbuff_tx, &_SPIbuff_rx); //ms
   }
 }
 
 // Allows to set the backlight, if the LCD backpack is used
 void setBacklight(int fd, uint8_t status) {
-  // check if i2c or SPI
-  if ((_i2cAddr != 255) || (_SPIclock != 255)) {
+  // check if SPI
+  if (_SPIclock != 255) {
     _digitalWrite(fd, 7, status); // backlight is on pin 7
-  }
-}
-
-// little wrapper for i/o directions
-void  _pinMode(uint8_t p, uint8_t d) {
-  if (_i2cAddr != 255) {
-    // an i2c command
-//ms    _i2c.pinMode(p, d);
-  } else if (_SPIclock != 255) {
-    // nothing!
-  } else {
-    // straightup IO
-//ms    pinMode(p, d);
   }
 }
 
@@ -420,46 +309,16 @@ void pulseEnable(int fd) {
 
 void write4bits(int fd, uint8_t value) {
   int i;
-  if (_i2cAddr != 255) {
-    uint8_t out = 0;
-
-//ms    out = _i2c.readGPIO();
-
-
-    // speed up for i2c since its sluggish
-    for (i = 0; i < 4; i++) {
-//ms      out &= ~_BV(_data_pins[i]);
-      out |= ((value >> i) & 0x1) << _data_pins[i];
-    }
-
-    // make sure enable is low
-//ms    out &= ~ _BV(_enable_pin);
-
-//ms    _i2c.writeGPIO(out);
-
-    // pulse enable
-    delayMicroseconds(1);
-//ms    out |= _BV(_enable_pin);
-//ms    _i2c.writeGPIO(out);
-    delayMicroseconds(1);
-//ms    out &= ~_BV(_enable_pin);
-//ms    _i2c.writeGPIO(out);   
-    delayMicroseconds(100);
-  } else {
-    for (i = 0; i < 4; i++) {
-//ms      _pinMode(_data_pins[i], OUTPUT);
-      _digitalWrite(fd, _data_pins[i], (value >> i) & 0x01);
-    }
-    pulseEnable(fd);
+  for (i = 0; i < 4; i++) {
+    _digitalWrite(fd, _data_pins[i], (value >> i) & 0x01);
   }
+  pulseEnable(fd);
 }
 
 void write8bits(int fd, uint8_t value) {
   int i;
   for (i = 0; i < 8; i++) {
-//ms    _pinMode(_data_pins[i], OUTPUT);
     _digitalWrite(fd, _data_pins[i], (value >> i) & 0x01);
   }
-  
   pulseEnable(fd);
 }
