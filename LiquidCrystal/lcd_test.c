@@ -64,8 +64,8 @@ int main(void) {
   setup(fd, 3, 2, 4);
   lcdSetup(fd);
   
-  while(1)
-    loop(fd);
+//  while(1)
+//    loop(fd);
 
 }
 
