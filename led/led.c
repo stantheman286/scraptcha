@@ -1,9 +1,3 @@
-// Access from ARM Running Linux
-
-#define BCM2708_PERI_BASE        0x20000000
-#define GPIO_BASE                (BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
-
-
 #include <unistd.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -12,65 +6,80 @@
 #include <sys/mman.h>
 #include <string.h>
 #include <inttypes.h>
+#include "led.h"
 
-#define PAGE_SIZE (4*1024)
-#define BLOCK_SIZE (4*1024)
+//
+// LED test code
+//
+int main(int argc, char *argv[]) {
 
-#define LOW     0
-#define HIGH     1
+  int g, i;
 
-#define LSBFIRST     0
-#define MSBFIRST     1
+  // Prepare IO on the Pi
+  setup_io();
 
-#define GPIO_OUTPUT     0
-#define GPIO_INPUT     1
+  // Enable LED bar and reset values
+  ledBarEnable();
 
-int  mem_fd;
-char *gpio_map;
+  // Run through all the red LEDs
+  shiftOut(ANODE0, MSBFIRST, LED0_RED);
+  delay(500);
+  shiftOut(ANODE0, MSBFIRST, LED1_RED);
+  delay(500);
+  shiftOut(ANODE0, MSBFIRST, LED2_RED);
+  delay(500);
+  shiftOut(ANODE0, MSBFIRST, LED3_RED);
+  delay(500);
+  shiftOut(ANODE1, MSBFIRST, LED0_RED);
+  delay(500);
+  shiftOut(ANODE1, MSBFIRST, LED1_RED);
+  delay(500);
+  shiftOut(ANODE1, MSBFIRST, LED2_RED);
+  delay(500);
+  shiftOut(ANODE1, MSBFIRST, LED3_RED);
+  delay(500);
+  shiftOut(ANODE2, MSBFIRST, LED0_RED);
+  delay(500);
+  shiftOut(ANODE2, MSBFIRST, LED1_RED);
+  delay(500);
+  shiftOut(ANODE2, MSBFIRST, LED2_RED);
+  delay(500);
+  shiftOut(ANODE2, MSBFIRST, LED3_RED);
+  delay(500);
 
-// I/O access
-volatile unsigned *gpio;
+  // Run through all the green LEDs
+  shiftOut(ANODE0, MSBFIRST, LED0_GRN);
+  delay(500);
+  shiftOut(ANODE0, MSBFIRST, LED1_GRN);
+  delay(500);
+  shiftOut(ANODE0, MSBFIRST, LED2_GRN);
+  delay(500);
+  shiftOut(ANODE0, MSBFIRST, LED3_GRN);
+  delay(500);
+  shiftOut(ANODE1, MSBFIRST, LED0_GRN);
+  delay(500);
+  shiftOut(ANODE1, MSBFIRST, LED1_GRN);
+  delay(500);
+  shiftOut(ANODE1, MSBFIRST, LED2_GRN);
+  delay(500);
+  shiftOut(ANODE1, MSBFIRST, LED3_GRN);
+  delay(500);
+  shiftOut(ANODE2, MSBFIRST, LED0_GRN);
+  delay(500);
+  shiftOut(ANODE2, MSBFIRST, LED1_GRN);
+  delay(500);
+  shiftOut(ANODE2, MSBFIRST, LED2_GRN);
+  delay(500);
+  shiftOut(ANODE2, MSBFIRST, LED3_GRN);
+  delay(500);
+  
+  // When done, disable the LED bar 
+  ledBarDisable();
 
-// GPIO setup macros. Always use INP_GPIO(x) before using OUT_GPIO(x) or SET_GPIO_ALT(x,y)
-#define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
-#define OUT_GPIO(g) *(gpio+((g)/10)) |=  (1<<(((g)%10)*3))
-#define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+  return 0;
 
-#define GPIO_SET *(gpio+7)  // sets   bits which are 1 ignores bits which are 0
-#define GPIO_CLR *(gpio+10) // clears bits which are 1 ignores bits which are 0
-
-void gpioSetPin(uint8_t pin, uint8_t dir) {
-
-  // Set pin number to given direction
-  INP_GPIO(pin);  // Must make pin an input first, even for output
-  if (dir == GPIO_OUTPUT)
-    OUT_GPIO(pin);
 }
 
-void gpioWrite(uint8_t pin, uint8_t value) {
-
-  // Need to assert set bit for '1', clear bit for '0'
-  if (value == HIGH)
-    GPIO_SET = 1<<pin;
-  else
-    GPIO_CLR = 1<<pin;
-}
-
-void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val)
-{
-  uint8_t i;
-
-  for (i = 0; i < 8; i++)  {
-    if (bitOrder == LSBFIRST)
-      gpioWrite(dataPin, !!(val & (1 << i)));
-    else  
-      gpioWrite(dataPin, !!(val & (1 << (7 - i))));
-                              
-    gpioWrite(clockPin, HIGH);
-    gpioWrite(clockPin, LOW);    
-  }
-
-}
 
 //
 // Set up a memory regions to access GPIO
@@ -104,85 +113,120 @@ void setup_io()
    gpio = (volatile unsigned *)gpio_map;
 } // setup_io
 
-int main(int argc, char *argv[]) {
+//
+// Configure GPIOs as input or output
+//
+void gpioSetPin(uint8_t pin, uint8_t dir) {
 
-  int i;
-  int g, rep, numberToDisplay;
-  int latchPin, dataPin, clockPin;
-  int anode [3];
+  // Set pin number to given direction
+  INP_GPIO(pin);  // Must make pin an input first, even for output
+  if (dir == GPIO_OUTPUT)
+    OUT_GPIO(pin);
+}
 
-  // Prepare IO on the Pi
-  setup_io();
+// 
+// Write a value to the GPIO
+//
+void gpioWrite(uint8_t pin, uint8_t value) {
 
-  // Pin Configuration
-  anode[0] = 25;
-  anode[1] = 24;
-  anode[2] = 23;
+  // Need to assert set bit for '1', clear bit for '0'
+  if (value == HIGH)
+    GPIO_SET = 1<<pin;
+  else
+    GPIO_CLR = 1<<pin;
+}
 
-  clockPin = 22;
-  latchPin = 21;
-  dataPin = 17;
+//
+// Shift out values to the cathode pins
+//
+void shiftOut(int anode, uint8_t bitOrder, uint8_t val)
+{
+  uint8_t i;
 
+  // Set the correct anode (disable others by setting to input) - TEMP
+  if (anode == ANODE0) {
+
+    gpioSetPin(ANODE0, GPIO_OUTPUT);
+    gpioSetPin(ANODE1, GPIO_INPUT);
+    gpioSetPin(ANODE2, GPIO_INPUT);
+
+    gpioWrite(ANODE0, LOW);
+
+   } else if (anode == ANODE1) {
+   
+    gpioSetPin(ANODE0, GPIO_INPUT);
+    gpioSetPin(ANODE1, GPIO_OUTPUT);
+    gpioSetPin(ANODE2, GPIO_INPUT);
+
+    gpioWrite(ANODE1, LOW);
+   
+   } else {
+
+    gpioSetPin(ANODE0, GPIO_INPUT);
+    gpioSetPin(ANODE1, GPIO_INPUT);
+    gpioSetPin(ANODE2, GPIO_OUTPUT);
+
+    gpioWrite(ANODE2, LOW);
+   
+  }
+
+  // Lower latch to start shifting data out
+  gpioWrite(LATCH_PIN, LOW);
+  
+  // Shift one bit per clock
+  for (i = 0; i < 8; i++)  {
+    if (bitOrder == LSBFIRST)
+      gpioWrite(DATA_PIN, !!(val & (1 << i)));
+    else  
+      gpioWrite(DATA_PIN, !!(val & (1 << (7 - i))));
+                              
+    gpioWrite(CLOCK_PIN, HIGH);
+    gpioWrite(CLOCK_PIN, LOW);    
+  }
+  
+  // Release latch to store value
+  gpioWrite(LATCH_PIN, HIGH);
+
+}
+
+// 
+// Enable the LED bar
+//
+void ledBarEnable() {
+  
   // Set up GPIO pin directions
-  gpioSetPin(anode[0], GPIO_OUTPUT);
-  gpioSetPin(anode[1], GPIO_INPUT);
-  gpioSetPin(anode[2], GPIO_OUTPUT);
+  gpioSetPin(ANODE0, GPIO_INPUT); // Disable anodes by setting to input
+  gpioSetPin(ANODE1, GPIO_INPUT);
+  gpioSetPin(ANODE2, GPIO_INPUT);
   
-  gpioSetPin(latchPin, GPIO_OUTPUT);
-  gpioSetPin(clockPin, GPIO_OUTPUT);
-  gpioSetPin(dataPin, GPIO_OUTPUT);
+  gpioSetPin(CLOCK_PIN, GPIO_OUTPUT);
+  gpioSetPin(LATCH_PIN, GPIO_OUTPUT);
+  gpioSetPin(DATA_PIN, GPIO_OUTPUT);
 
-  // Reset all pin values //LOW enables
-  gpioWrite(anode[0], HIGH);
-  gpioWrite(anode[1], HIGH);
-  gpioWrite(anode[2], HIGH);
-  // collector always lower than base, just tristate it (INPUT)
-  gpioWrite(latchPin, HIGH);
-  gpioWrite(clockPin, HIGH);
-  gpioWrite(dataPin, HIGH);
-
-  // Reset // LOW enables
-  gpioWrite(latchPin, LOW);
-  shiftOut(dataPin, clockPin, MSBFIRST, 0x00);  
-  gpioWrite(latchPin, HIGH);
- 
-  // TEST - Turn on first red LED (0 = active)
-//  gpioWrite(latchPin, LOW);
-//  gpioWrite(anode[0], LOW);
-//  shiftOut(dataPin, clockPin, MSBFIRST, 0xFF);  
-//  gpioWrite(latchPin, HIGH);
+  // Reset all pin values
+  gpioWrite(ANODE0, HIGH);  // Active low
+  gpioWrite(ANODE1, HIGH);
+  gpioWrite(ANODE2, HIGH);
   
- /* 
-  // count from 0 to 255 and display the number 
-  // on the LEDs
-  for (numberToDisplay = 0; numberToDisplay < 256; numberToDisplay++) {
-    // take the latchPin low so 
-    // the LEDs don't change while you're sending in bits:
-    gpioWrite(latchPin, LOW);
-    // shift out the bits:
-    shiftOut(dataPin, clockPin, MSBFIRST, numberToDisplay);  
-    
-    //take the latch pin high so the LEDs will light up:
-    gpioWrite(latchPin, HIGH);
-    // pause before next value:
-    delay(500);
-  }*/
- 
-  delay(3000);
-//  gpioWrite(anode[0], HIGH);
-//  delay(1000);
-//  gpioWrite(anode[0], LOW);
+  gpioWrite(LATCH_PIN, HIGH);
+  gpioWrite(CLOCK_PIN, HIGH);
+  gpioWrite(DATA_PIN, HIGH);
 
-  // When done, set all pins to input for safety
-  gpioSetPin(anode[0], GPIO_INPUT);
-  gpioSetPin(anode[1], GPIO_INPUT);
-  gpioSetPin(anode[2], GPIO_INPUT);
+}
+
+// 
+// Disable the LED bar
+//
+void ledBarDisable() {
+
+  // Set all pins to inputs for safety
+  gpioSetPin(ANODE0, GPIO_INPUT);
+  gpioSetPin(ANODE1, GPIO_INPUT);
+  gpioSetPin(ANODE2, GPIO_INPUT);
   
-  gpioSetPin(latchPin, GPIO_INPUT);
-  gpioSetPin(clockPin, GPIO_INPUT);
-  gpioSetPin(dataPin, GPIO_INPUT);
-
-  return 0;
+  gpioSetPin(LATCH_PIN, GPIO_INPUT);
+  gpioSetPin(CLOCK_PIN, GPIO_INPUT);
+  gpioSetPin(DATA_PIN, GPIO_INPUT);
 
 }
 
