@@ -106,16 +106,53 @@ void setup_io()
 
 int main(int argc, char *argv[]) {
 
+  int i;
   int g, rep, numberToDisplay;
   int latchPin, dataPin, clockPin;
+  int anode [3];
 
   // Prepare IO on the Pi
   setup_io();
 
-  // Set up GPIO pins
+  // Pin Configuration
+  anode[0] = 25;
+  anode[1] = 24;
+  anode[2] = 23;
 
-  // Write test code
+  clockPin = 22;
+  latchPin = 21;
+  dataPin = 17;
+
+  // Set up GPIO pin directions
+  gpioSetPin(anode[0], GPIO_OUTPUT);
+  gpioSetPin(anode[1], GPIO_INPUT);
+  gpioSetPin(anode[2], GPIO_OUTPUT);
   
+  gpioSetPin(latchPin, GPIO_OUTPUT);
+  gpioSetPin(clockPin, GPIO_OUTPUT);
+  gpioSetPin(dataPin, GPIO_OUTPUT);
+
+  // Reset all pin values //LOW enables
+  gpioWrite(anode[0], HIGH);
+  gpioWrite(anode[1], HIGH);
+  gpioWrite(anode[2], HIGH);
+  // collector always lower than base, just tristate it (INPUT)
+  gpioWrite(latchPin, HIGH);
+  gpioWrite(clockPin, HIGH);
+  gpioWrite(dataPin, HIGH);
+
+  // Reset // LOW enables
+  gpioWrite(latchPin, LOW);
+  shiftOut(dataPin, clockPin, MSBFIRST, 0x00);  
+  gpioWrite(latchPin, HIGH);
+ 
+  // TEST - Turn on first red LED (0 = active)
+//  gpioWrite(latchPin, LOW);
+//  gpioWrite(anode[0], LOW);
+//  shiftOut(dataPin, clockPin, MSBFIRST, 0xFF);  
+//  gpioWrite(latchPin, HIGH);
+  
+ /* 
   // count from 0 to 255 and display the number 
   // on the LEDs
   for (numberToDisplay = 0; numberToDisplay < 256; numberToDisplay++) {
@@ -129,9 +166,21 @@ int main(int argc, char *argv[]) {
     gpioWrite(latchPin, HIGH);
     // pause before next value:
     delay(500);
-  }
-  
+  }*/
+ 
+  delay(3000);
+//  gpioWrite(anode[0], HIGH);
+//  delay(1000);
+//  gpioWrite(anode[0], LOW);
+
   // When done, set all pins to input for safety
+  gpioSetPin(anode[0], GPIO_INPUT);
+  gpioSetPin(anode[1], GPIO_INPUT);
+  gpioSetPin(anode[2], GPIO_INPUT);
+  
+  gpioSetPin(latchPin, GPIO_INPUT);
+  gpioSetPin(clockPin, GPIO_INPUT);
+  gpioSetPin(dataPin, GPIO_INPUT);
 
   return 0;
 
