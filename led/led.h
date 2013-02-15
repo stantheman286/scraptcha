@@ -20,7 +20,7 @@
 #define GPIO_INPUT     1
 
 int  mem_fd;
-char *gpio_map;
+unsigned char *gpio_map;
 
 // I/O access
 volatile unsigned *gpio;
@@ -52,6 +52,9 @@ volatile unsigned *gpio;
 #define LED3_RED 0xBF
 #define LED3_GRN 0x7F
 
+#define RED     0
+#define GREEN     1
+
 // Prototypes
 void setup_io();
 void gpioSetPin(uint8_t, uint8_t);
@@ -59,6 +62,8 @@ void gpioWrite(uint8_t, uint8_t);
 void shiftOut(int, uint8_t, uint8_t);
 void ledBarEnable();
 void ledBarDisable();
+void ledBlockSet(int, int, int);
+void ledScrollSet(int);
 
 #endif
 

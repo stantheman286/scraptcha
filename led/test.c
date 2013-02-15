@@ -14,7 +14,7 @@
 #define BLOCK_SIZE (4*1024)
 
 int  mem_fd;
-char *gpio_map;
+unsigned char *gpio_map;
 
 // I/O access
 volatile unsigned *gpio;
@@ -37,6 +37,10 @@ int main(int argc, char **argv)
   // Set up gpi pointer for direct register access
   setup_io();
 
+  INP_GPIO(17);
+  OUT_GPIO(17);
+  GPIO_CLR = 1<<17;
+
   return 0;
 
 } // main
@@ -54,7 +58,7 @@ void setup_io()
    }
 
    /* mmap GPIO */
-   gpio_map = (char *)mmap(
+   gpio_map = (unsigned char *)mmap(
       NULL,             //Any adddress in our space will do
       BLOCK_SIZE,       //Map length
       PROT_READ|PROT_WRITE,// Enable reading & writting to mapped memory
@@ -65,7 +69,7 @@ void setup_io()
 
    close(mem_fd); //No need to keep mem_fd open after mmap
 
-   if ((long)gpio_map < 0) {
+   if (gpio_map == MAP_FAILED) {
       printf("mmap error %d\n", (int)gpio_map);
       exit(-1);
    }
