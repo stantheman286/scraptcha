@@ -13,7 +13,10 @@
 //
 int main(int argc, char *argv[]) {
 
-  int g, i;
+  int g, i, delay;
+
+  // Set delay for all tests
+  delay = 1500;
 
   // Prepare IO on the Pi
   setup_io();
@@ -21,58 +24,17 @@ int main(int argc, char *argv[]) {
   // Enable LED bar and reset values
   ledBarEnable();
 
-  // Run through all the red LEDs
-  shiftOut(ANODE0, MSBFIRST, LED0_RED);
-  delay(500);
-  shiftOut(ANODE0, MSBFIRST, LED1_RED);
-  delay(500);
-  shiftOut(ANODE0, MSBFIRST, LED2_RED);
-  delay(500);
-  shiftOut(ANODE0, MSBFIRST, LED3_RED);
-  delay(500);
-  shiftOut(ANODE1, MSBFIRST, LED0_RED);
-  delay(500);
-  shiftOut(ANODE1, MSBFIRST, LED1_RED);
-  delay(500);
-  shiftOut(ANODE1, MSBFIRST, LED2_RED);
-  delay(500);
-  shiftOut(ANODE1, MSBFIRST, LED3_RED);
-  delay(500);
-  shiftOut(ANODE2, MSBFIRST, LED0_RED);
-  delay(500);
-  shiftOut(ANODE2, MSBFIRST, LED1_RED);
-  delay(500);
-  shiftOut(ANODE2, MSBFIRST, LED2_RED);
-  delay(500);
-  shiftOut(ANODE2, MSBFIRST, LED3_RED);
-  delay(500);
+  // LED block tests
+  ledBlockSet(ANODE0, RED, delay);
+  ledBlockSet(ANODE1, RED, delay);
+  ledBlockSet(ANODE2, RED, delay);
+  ledBlockSet(ANODE0, GREEN, delay);
+  ledBlockSet(ANODE1, GREEN, delay);
+  ledBlockSet(ANODE2, GREEN, delay);
 
-  // Run through all the green LEDs
-  shiftOut(ANODE0, MSBFIRST, LED0_GRN);
-  delay(500);
-  shiftOut(ANODE0, MSBFIRST, LED1_GRN);
-  delay(500);
-  shiftOut(ANODE0, MSBFIRST, LED2_GRN);
-  delay(500);
-  shiftOut(ANODE0, MSBFIRST, LED3_GRN);
-  delay(500);
-  shiftOut(ANODE1, MSBFIRST, LED0_GRN);
-  delay(500);
-  shiftOut(ANODE1, MSBFIRST, LED1_GRN);
-  delay(500);
-  shiftOut(ANODE1, MSBFIRST, LED2_GRN);
-  delay(500);
-  shiftOut(ANODE1, MSBFIRST, LED3_GRN);
-  delay(500);
-  shiftOut(ANODE2, MSBFIRST, LED0_GRN);
-  delay(500);
-  shiftOut(ANODE2, MSBFIRST, LED1_GRN);
-  delay(500);
-  shiftOut(ANODE2, MSBFIRST, LED2_GRN);
-  delay(500);
-  shiftOut(ANODE2, MSBFIRST, LED3_GRN);
-  delay(500);
-  
+  // Scrolling LED test
+  ledScrollSet(delay);
+
   // When done, disable the LED bar 
   ledBarDisable();
 
@@ -93,7 +55,7 @@ void setup_io()
    }
 
    /* mmap GPIO */
-   gpio_map = (char *)mmap(
+   gpio_map = (unsigned char *)mmap(
       NULL,             //Any adddress in our space will do
       BLOCK_SIZE,       //Map length
       PROT_READ|PROT_WRITE,// Enable reading & writting to mapped memory
@@ -104,7 +66,7 @@ void setup_io()
    close(mem_fd); //No need to keep mem_fd open after mmap
 
 
-   if ((long)gpio_map < 0) {
+   if (gpio_map == MAP_FAILED) {
       printf("mmap error %d\n", (int)gpio_map);
       exit(-1);
    }
@@ -227,6 +189,80 @@ void ledBarDisable() {
   gpioSetPin(LATCH_PIN, GPIO_INPUT);
   gpioSetPin(CLOCK_PIN, GPIO_INPUT);
   gpioSetPin(DATA_PIN, GPIO_INPUT);
+
+}
+
+//
+// Block LED bar test
+//
+void ledBlockSet(int anode, int color, int d) {
+  
+  // Output to all LEDs for a given anode based on color
+  if (color == RED)
+    shiftOut(anode, MSBFIRST, LED0_RED & LED1_RED & LED2_RED & LED3_RED);
+  else
+    shiftOut(anode, MSBFIRST, LED0_GRN & LED1_GRN & LED2_GRN & LED3_GRN);
+
+  delay(d);
+
+}
+
+//
+// Scrolling LED bar test
+//
+void ledScrollSet(int d) {
+
+  // Run through all the red LEDs
+  shiftOut(ANODE0, MSBFIRST, LED0_RED);
+  delay(d);
+  shiftOut(ANODE0, MSBFIRST, LED1_RED);
+  delay(d);
+  shiftOut(ANODE0, MSBFIRST, LED2_RED);
+  delay(d);
+  shiftOut(ANODE0, MSBFIRST, LED3_RED);
+  delay(d);
+  shiftOut(ANODE1, MSBFIRST, LED0_RED);
+  delay(d);
+  shiftOut(ANODE1, MSBFIRST, LED1_RED);
+  delay(d);
+  shiftOut(ANODE1, MSBFIRST, LED2_RED);
+  delay(d);
+  shiftOut(ANODE1, MSBFIRST, LED3_RED);
+  delay(d);
+  shiftOut(ANODE2, MSBFIRST, LED0_RED);
+  delay(d);
+  shiftOut(ANODE2, MSBFIRST, LED1_RED);
+  delay(d);
+  shiftOut(ANODE2, MSBFIRST, LED2_RED);
+  delay(d);
+  shiftOut(ANODE2, MSBFIRST, LED3_RED);
+  delay(d);
+
+  // Run through all the green LEDs
+  shiftOut(ANODE0, MSBFIRST, LED0_GRN);
+  delay(d);
+  shiftOut(ANODE0, MSBFIRST, LED1_GRN);
+  delay(d);
+  shiftOut(ANODE0, MSBFIRST, LED2_GRN);
+  delay(d);
+  shiftOut(ANODE0, MSBFIRST, LED3_GRN);
+  delay(d);
+  shiftOut(ANODE1, MSBFIRST, LED0_GRN);
+  delay(d);
+  shiftOut(ANODE1, MSBFIRST, LED1_GRN);
+  delay(d);
+  shiftOut(ANODE1, MSBFIRST, LED2_GRN);
+  delay(d);
+  shiftOut(ANODE1, MSBFIRST, LED3_GRN);
+  delay(d);
+  shiftOut(ANODE2, MSBFIRST, LED0_GRN);
+  delay(d);
+  shiftOut(ANODE2, MSBFIRST, LED1_GRN);
+  delay(d);
+  shiftOut(ANODE2, MSBFIRST, LED2_GRN);
+  delay(d);
+  shiftOut(ANODE2, MSBFIRST, LED3_GRN);
+  delay(d);
 
 }
 

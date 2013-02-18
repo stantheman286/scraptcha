@@ -47,7 +47,7 @@ void loop(int fd) {
   delay(500);
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
 
   int fd = open("/dev/spidev0.1", O_RDWR);
 
@@ -63,7 +63,13 @@ int main(void) {
 
   setup(fd, 3, 2, 4);
   lcdSetup(fd);
-  
+ 
+  // Kill text and backlight if not using
+  if ((argc == 2) && (strcmp(argv[1], "--off") == 0)) {
+    noDisplay(fd);
+    setBacklight(fd, LOW);
+  }
+
 //  while(1)
 //    loop(fd);
 
