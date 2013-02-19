@@ -6,6 +6,7 @@
 #include <highgui.h> 
 #include "webcam.h"
 
+/*
 int main(int argc, char *argv[]) {
 
   char filename[255];
@@ -29,7 +30,7 @@ int main(int argc, char *argv[]) {
   }
 
   return 0;
-}
+}*/
 
 int takePicture(const char *filename, int type) {
   

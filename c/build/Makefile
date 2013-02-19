@@ -5,6 +5,8 @@
 # We instead explicitly write all the rules we care about.
 # It's even quicker (saves ~200ms) to pass -r on the command line.
 MAKEFLAGS=-r
+CFLAGS = `pkg-config --cflags --libs opencv`
+LDFLAGS = `pkg-config --cflags --libs opencv`
 
 # The source directory tree.
 srcdir := ..
@@ -39,8 +41,6 @@ abs_obj := $(abspath $(obj))
 all_deps :=
 
 
-CFLAGS = `pkg-config --cflags --libs opencv`
-LDFLAGS = `pkg-config --cflags --libs opencv`
 
 # C++ apps need to be linked with g++.
 #
@@ -319,8 +319,8 @@ ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
 endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
-cmd_regen_makefile = /usr/local/lib/node_modules/node-gyp/gyp/gyp -fmake --ignore-environment "--toplevel-dir=." -I/home/pi/scraptcha/c/build/config.gypi -I/usr/local/lib/node_modules/node-gyp/addon.gypi -I/home/pi/.node-gyp/0.8.16/common.gypi "--depth=." "-Goutput_dir=." "--generator-output=build" "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/home/pi/.node-gyp/0.8.16" "-Dmodule_root_dir=/home/pi/scraptcha/c" binding.gyp
-Makefile: $(srcdir)/../../.node-gyp/0.8.16/common.gypi $(srcdir)/build/config.gypi $(srcdir)/binding.gyp $(srcdir)/../../../../usr/local/lib/node_modules/node-gyp/addon.gypi
+cmd_regen_makefile = /usr/lib/node_modules/node-gyp/gyp/gyp -fmake --ignore-environment "--toplevel-dir=." "-I/home/matt/Dropbox/Documents/College/UW/2012-2013/Winter 2013/EE 542/project/scraptcha/c/build/config.gypi" -I/usr/lib/node_modules/node-gyp/addon.gypi -I/home/matt/.node-gyp/0.8.17/common.gypi "--depth=." "-Goutput_dir=." "--generator-output=build" "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/home/matt/.node-gyp/0.8.17" "-Dmodule_root_dir=/home/matt/Dropbox/Documents/College/UW/2012-2013/Winter 2013/EE 542/project/scraptcha/c" binding.gyp
+Makefile: $(srcdir)/../../../../../../../../../../.node-gyp/0.8.17/common.gypi $(srcdir)/build/config.gypi $(srcdir)/binding.gyp $(srcdir)/../../../../../../../../../../../../usr/lib/node_modules/node-gyp/addon.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included
