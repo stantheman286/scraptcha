@@ -9,7 +9,7 @@
 #define RECYCLING 1
 #define COMPOST 2
 
-int takePicture(char *, int);
-int detectScrap(char *);
+int takePicture(const char *, int);
+int detectScrap(const char *);
 
 #endif

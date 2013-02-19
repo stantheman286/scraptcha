@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-int takePicture(char *filename, int type) {
+int takePicture(const char *filename, int type) {
   
   IplImage *frame;
   
@@ -104,7 +104,7 @@ int takePicture(char *filename, int type) {
   return 0;
 }
 
-int detectScrap(char *imageName) {
+int detectScrap(const char *imageName) {
 
   int h, w, r_step, g_step, b_step, i, j, result;
   unsigned int r_sum, g_sum, b_sum;
