@@ -42,8 +42,11 @@ var delay;
 var filename = 'test.jpg';
 var type;
 
+// LCD test
+scraptcha.lcdTest();
+
 // LED test
-scraptcha.ledTest();
+//scraptcha.ledTest();
 
 // Webcam test
 // scraptcha.takePicture(filename, CAPTURE);

@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "myScraptcha",
-      "sources": [ "webcam.c", "wiringPi/wiringPi.c", "led.c", "scraptcha.cc" ]
+      "sources": [ "wiringPi/wiringPi.c", "nodeSPI/spi.c", "lcd.c", "led.c", "webcam.c", "scraptcha.cc" ]
     }
   ]
 }

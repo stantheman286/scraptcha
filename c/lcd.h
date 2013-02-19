@@ -41,6 +41,7 @@
 #define LCD_5x10DOTS 0x04
 #define LCD_5x8DOTS 0x00
 
+int lcdTest();
 void setup(int fd, uint8_t data, uint8_t clock, uint8_t latch);
 void init(int fd, uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
     uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
@@ -67,12 +68,12 @@ void createChar(int, uint8_t, uint8_t[]);
 void setCursor(int, uint8_t, uint8_t); 
 void command(int, uint8_t);
 void write(int, uint8_t);
-void send(int, uint8_t, uint8_t);
+void lcdSend(int, uint8_t, uint8_t);
 void write4bits(int, uint8_t);
 void write8bits(int, uint8_t);
 void pulseEnable(int);
 void _digitalWrite(int, uint8_t, uint8_t);
-void print(int, char*);
+void lcdPrint(int, const char*);
         
 uint8_t _rs_pin; // LOW: command.  HIGH: character.
 uint8_t _rw_pin; // LOW: write to LCD.  HIGH: read from LCD.

@@ -24,8 +24,9 @@
 //    S = 0; No shift 
 //
 
-int main(int argc, char *argv[]) {
-  
+//int main(int argc, char *argv[]) {
+int lcdTest() {
+
   int fd = open("/dev/spidev0.1", O_RDWR);
 
   if (fd < 0) {
@@ -43,16 +44,18 @@ int main(int argc, char *argv[]) {
   // set up the LCD's number of rows and columns: 
   begin(fd, 16, 2, LCD_5x8DOTS);
   // Print a message to the LCD.
-  print(fd, "hello, world!");
+  lcdPrint(fd, "hello, world!");
  
   // Kill text and backlight if not using
-  if ((argc == 2) && (strcmp(argv[1], "--off") == 0)) {
-    noDisplay(fd);
-    setBacklight(fd, LOW);
-  }
+//  if ((argc == 2) && (strcmp(argv[1], "--off") == 0)) {
+//    noDisplay(fd);
+//    setBacklight(fd, LOW);
+//  }
 
 //  while(1)
 //    loop(fd);
+  
+  return 0;
 
 }
 
@@ -285,11 +288,11 @@ void createChar(int fd, uint8_t location, uint8_t charmap[]) {
 /*********** mid level commands, for sending data/cmds */
 
 inline void command(int fd, uint8_t value) {
-  send(fd, value, LOW);
+  lcdSend(fd, value, LOW);
 }
 
 inline void write(int fd, uint8_t value) {
-  send(fd, value, HIGH);
+  lcdSend(fd, value, HIGH);
 }
 
 /************ low level data pushing commands **********/
@@ -314,7 +317,7 @@ void setBacklight(int fd, uint8_t status) {
 }
 
 // write either command or data, with automatic 4/8-bit selection
-void send(int fd, uint8_t value, uint8_t mode) {
+void lcdSend(int fd, uint8_t value, uint8_t mode) {
   _digitalWrite(fd, _rs_pin, mode);
 
   // if there is a RW pin indicated, set it low to Write
@@ -355,7 +358,7 @@ void write8bits(int fd, uint8_t value) {
   pulseEnable(fd);
 }
 
-void print(int fd, char *s) {
+void lcdPrint(int fd, const char *s) {
   
   int i;
 

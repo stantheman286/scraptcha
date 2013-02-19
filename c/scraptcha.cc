@@ -4,11 +4,739 @@
 #include<fcntl.h>
 #include<string>
 extern "C" {
+#include "lcd.h"
 #include "led.h"
 #include "webcam.h"
 }
 
 using namespace v8;
+
+/*
+function name: lcdTest 
+inputs:
+	undefined
+returns:
+	undefined
+*/
+Handle<Value> lcdTest(const Arguments& args) {
+	HandleScope scope;
+
+  if ((lcdTest()) < 0) {
+		ThrowException(
+			Exception::Error(String::New("Unable to execute LCD test program")));
+		return scope.Close(Undefined());
+	}
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: setup 
+inputs:
+	args[0]: fd
+  args[1]: data
+  args[2]: clock
+  args[3]: latch
+returns:
+	undefined
+*/
+Handle<Value> setup(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 4) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsNumber() || !args[3]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+	int data = args[1]->Int32Value();
+	int clock = args[2]->Int32Value();
+	int latch = args[3]->Int32Value();
+
+	if ((fd < 0) || (data < 0) || (data > 32) || (clock < 0) || (clock > 32) || (latch < 0) || (latch > 32)) {
+		ThrowException(Exception::Error(String::New("Invalid LCD pin settings or descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  setup((int32_t)fd, (int32_t)data, (int32_t)clock, (int32_t)latch);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: begin 
+inputs:
+	args[0]: fd
+  args[1]: columns
+  args[2]: lines
+  args[3]: dot size
+returns:
+	undefined
+*/
+Handle<Value> begin(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 4) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsNumber() || !args[3]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+	int cols = args[1]->Int32Value();
+	int lines = args[2]->Int32Value();
+	int dotsize = args[3]->Int32Value();
+
+	if ((fd < 0) || (cols < 0) || (lines < 0) || (dotsize < 0)) {
+		ThrowException(Exception::Error(String::New("Invalid LCD settings or descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  begin((int32_t)fd, (int32_t)cols, (int32_t)lines, (int32_t)dotsize);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: clear 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> clear(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  clear((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: home 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> home(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  home((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: setCursor
+inputs:
+	args[0]: fd
+  args[1]: column
+  args[2]: row 
+returns:
+	undefined
+*/
+Handle<Value> setCursor(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 3) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+	int col = args[1]->Int32Value();
+	int row = args[2]->Int32Value();
+
+	if ((fd < 0) || (col < 0) || (row < 0)) {
+		ThrowException(Exception::Error(String::New("Invalid LCD location or descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  setCursor((int32_t)fd, (int32_t)col, (int32_t)row);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: noDisplay 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> noDisplay(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  noDisplay((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: display
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> display(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  display((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: noCursor
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> noCursor(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  noCursor((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: cursor 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> cursor(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  cursor((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: noBlink 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> noBlink(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  noBlink((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: blink 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> blink(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  blink((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: scrollDisplayLeft 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> scrollDisplayLeft(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  scrollDisplayLeft((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: scrollDisplayRight
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> scrollDisplayRight(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  scrollDisplayRight((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: leftToRight
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> leftToRight(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  leftToRight((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: rightToLeft 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> rightToLeft(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  rightToLeft((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: autoscroll 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> autoscroll(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  autoscroll((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: noAutoscroll 
+inputs:
+  args[0]: fd
+returns:
+	undefined
+*/
+Handle<Value> noAutoscroll(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 1) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  noAutoscroll((int32_t)fd);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: createChar
+inputs:
+	args[0]: fd
+  args[1]: location
+  args[2]: character map
+returns:
+	undefined
+*/
+//ms: fix, see Array in nodeSPI Handle<Value> createChar(const Arguments& args) {
+//ms: fix, see Array in nodeSPI 	HandleScope scope;
+//ms: fix, see Array in nodeSPI 
+//ms: fix, see Array in nodeSPI 	//Check inputs
+//ms: fix, see Array in nodeSPI 	if (args.Length() < 3) {
+//ms: fix, see Array in nodeSPI 		ThrowException(
+//ms: fix, see Array in nodeSPI 			Exception::TypeError(String::New("Wrong number of arguments")));
+//ms: fix, see Array in nodeSPI 		return scope.Close(Undefined());
+//ms: fix, see Array in nodeSPI 	}
+//ms: fix, see Array in nodeSPI 	if (!args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsString()) {
+//ms: fix, see Array in nodeSPI 		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+//ms: fix, see Array in nodeSPI 		return scope.Close(Undefined());
+//ms: fix, see Array in nodeSPI 	}
+//ms: fix, see Array in nodeSPI 
+//ms: fix, see Array in nodeSPI   //unpack args
+//ms: fix, see Array in nodeSPI 	int fd = args[0]->Int32Value();
+//ms: fix, see Array in nodeSPI 	int location = args[1]->Int32Value();
+//ms: fix, see Array in nodeSPI 	v8::String::Utf8Value inputString(args[2]->ToString());
+//ms: fix, see Array in nodeSPI 	std::string charmap = std::string(*inputString);
+//ms: fix, see Array in nodeSPI 
+//ms: fix, see Array in nodeSPI 	if ((fd < 0) || (location < 0)) {
+//ms: fix, see Array in nodeSPI 		ThrowException(Exception::Error(String::New("Invalid LCD location or descriptor")));
+//ms: fix, see Array in nodeSPI 		return scope.Close(Undefined());
+//ms: fix, see Array in nodeSPI 	}
+//ms: fix, see Array in nodeSPI   //ms: check NULL string
+//ms: fix, see Array in nodeSPI 
+//ms: fix, see Array in nodeSPI   createChar((int32_t)fd, (int32_t)location, charmap.c_str());
+//ms: fix, see Array in nodeSPI 
+//ms: fix, see Array in nodeSPI   return scope.Close(Undefined());
+//ms: fix, see Array in nodeSPI }
+
+/*
+function name: setBacklight
+inputs:
+	args[0]: fd
+  args[1]: status
+returns:
+	undefined
+*/
+Handle<Value> setBacklight(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 2) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+	int status = args[1]->Int32Value();
+
+	if ((fd < 0) || (status < 0)) {
+		ThrowException(Exception::Error(String::New("Invalid LCD backlight setting or descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  setBacklight((int32_t)fd, (int32_t)status);
+
+  return scope.Close(Undefined());
+}
+
+/*
+function name: lcdPrint
+inputs:
+	args[0]: fd
+  args[1]: string
+returns:
+	undefined
+*/
+Handle<Value> lcdPrint(const Arguments& args) {
+	HandleScope scope;
+
+	//Check inputs
+	if (args.Length() < 2) {
+		ThrowException(
+			Exception::TypeError(String::New("Wrong number of arguments")));
+		return scope.Close(Undefined());
+	}
+	if (!args[0]->IsNumber() || !args[1]->IsString()) {
+		ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+		return scope.Close(Undefined());
+	}
+
+  //unpack args
+	int fd = args[0]->Int32Value();
+	v8::String::Utf8Value inputString(args[1]->ToString());
+	std::string s = std::string(*inputString);
+
+	if (fd < 0) {
+		ThrowException(Exception::Error(String::New("Invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+  //ms: check NULL string
+
+  lcdPrint((int32_t)fd, s.c_str());
+
+  return scope.Close(Undefined());
+}
 
 /*
 function name: ledTest 
@@ -66,7 +794,7 @@ Handle<Value> gpioSetPin(const Arguments& args) {
 	int pin = args[0]->Int32Value();
 	int dir = args[1]->Int32Value();
 
-	if (((pin < 32) && (pin > 32)) || ((dir != GPIO_INPUT) && (dir != GPIO_OUTPUT))){
+	if ((pin < 0) || (pin > 32) || ((dir != GPIO_INPUT) && (dir != GPIO_OUTPUT))){
 		ThrowException(Exception::Error(String::New("Invalid GPIO settings")));
 		return scope.Close(Undefined());
 	}
@@ -102,7 +830,7 @@ Handle<Value> gpioWrite(const Arguments& args) {
 	int pin = args[0]->Int32Value();
 	int value = args[1]->Int32Value();
 
-	if (((pin < 32) && (pin > 32)) || ((value != LOW) && (value != HIGH))){
+	if ((pin < 0) || (pin > 32) || ((value != LOW) && (value != HIGH))){
 		ThrowException(Exception::Error(String::New("Invalid GPIO settings")));
 		return scope.Close(Undefined());
 	}
@@ -333,6 +1061,49 @@ Handle<Value> detectScrap(const Arguments& args) {
 }
 
 void Init(Handle<Object> target) {
+	target->Set(String::NewSymbol("lcdTest"),
+			FunctionTemplate::New(lcdTest)->GetFunction());
+	target->Set(String::NewSymbol("setup"),
+			FunctionTemplate::New(setup)->GetFunction());
+	target->Set(String::NewSymbol("begin"),
+			FunctionTemplate::New(begin)->GetFunction());
+	target->Set(String::NewSymbol("clear"),
+			FunctionTemplate::New(clear)->GetFunction());
+	target->Set(String::NewSymbol("home"),
+			FunctionTemplate::New(home)->GetFunction());
+	target->Set(String::NewSymbol("setCursor"),
+			FunctionTemplate::New(setCursor)->GetFunction());
+	target->Set(String::NewSymbol("noDisplay"),
+			FunctionTemplate::New(noDisplay)->GetFunction());
+	target->Set(String::NewSymbol("display"),
+			FunctionTemplate::New(display)->GetFunction());
+	target->Set(String::NewSymbol("noCursor"),
+			FunctionTemplate::New(noCursor)->GetFunction());
+	target->Set(String::NewSymbol("cursor"),
+			FunctionTemplate::New(cursor)->GetFunction());
+	target->Set(String::NewSymbol("noBlink"),
+			FunctionTemplate::New(noBlink)->GetFunction());
+	target->Set(String::NewSymbol("blink"),
+			FunctionTemplate::New(blink)->GetFunction());
+	target->Set(String::NewSymbol("scrollDisplayLeft"),
+			FunctionTemplate::New(scrollDisplayLeft)->GetFunction());
+	target->Set(String::NewSymbol("scrollDisplayRight"),
+			FunctionTemplate::New(scrollDisplayRight)->GetFunction());
+	target->Set(String::NewSymbol("leftToRight"),
+			FunctionTemplate::New(leftToRight)->GetFunction());
+	target->Set(String::NewSymbol("rightToLeft"),
+			FunctionTemplate::New(rightToLeft)->GetFunction());
+	target->Set(String::NewSymbol("autoscroll"),
+			FunctionTemplate::New(autoscroll)->GetFunction());
+	target->Set(String::NewSymbol("noAutoscroll"),
+			FunctionTemplate::New(noAutoscroll)->GetFunction());
+//ms 	target->Set(String::NewSymbol("createChar"),
+//ms 			FunctionTemplate::New(createChar)->GetFunction());
+	target->Set(String::NewSymbol("setBacklight"),
+			FunctionTemplate::New(setBacklight)->GetFunction());
+	target->Set(String::NewSymbol("lcdPrint"),
+			FunctionTemplate::New(lcdPrint)->GetFunction());
+
 	target->Set(String::NewSymbol("ledTest"),
 			FunctionTemplate::New(ledTest)->GetFunction());
 	target->Set(String::NewSymbol("setup_io"),
@@ -351,6 +1122,7 @@ void Init(Handle<Object> target) {
 			FunctionTemplate::New(ledBlockSet)->GetFunction());
 	target->Set(String::NewSymbol("ledScrollSet"),
 			FunctionTemplate::New(ledScrollSet)->GetFunction());
+
 	target->Set(String::NewSymbol("takePicture"),
 			FunctionTemplate::New(takePicture)->GetFunction());
 	target->Set(String::NewSymbol("detectScrap"),

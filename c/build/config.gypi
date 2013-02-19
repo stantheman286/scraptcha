@@ -8,25 +8,24 @@
     "libraries": []
   },
   "variables": {
-    "armv7": 0,
     "clang": 0,
-    "gcc_version": 46,
-    "host_arch": "arm",
+    "gcc_version": 47,
+    "host_arch": "x64",
     "node_install_npm": "true",
     "node_install_waf": "true",
-    "node_prefix": "",
-    "node_shared_openssl": "false",
+    "node_prefix": "/usr",
+    "node_shared_openssl": "true",
     "node_shared_v8": "false",
     "node_shared_zlib": "false",
+    "node_tag": "",
     "node_unsafe_optimizations": 0,
     "node_use_dtrace": "false",
     "node_use_etw": "false",
     "node_use_openssl": "true",
-    "target_arch": "arm",
+    "target_arch": "x64",
     "v8_no_strict_aliasing": 1,
-    "v8_use_arm_eabi_hardfloat": "true",
     "v8_use_snapshot": "true",
-    "nodedir": "/home/pi/.node-gyp/0.8.16",
+    "nodedir": "/home/matt/.node-gyp/0.8.17",
     "copy_dev_lib": "true"
   }
 }
