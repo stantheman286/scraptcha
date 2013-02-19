@@ -39,7 +39,7 @@ Handle<Value> takePicture(const Arguments& args) {
 //  char *filename = ParseFromString(*inputString, inputString.length());
 	int type = args[1]->Int32Value();
 
-	if ((type != CAPTURE) || (type != LIVE)){
+	if ((type != CAPTURE) && (type != LIVE)){
 		ThrowException(Exception::Error(String::New("Invalid webcam mode")));
 		return scope.Close(Undefined());
 	}
