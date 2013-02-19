@@ -46,16 +46,16 @@ var type;
 scraptcha.lcdTest();
 
 // LED test
-//scraptcha.ledTest();
+scraptcha.ledTest();
 
 // Webcam test
-// scraptcha.takePicture(filename, CAPTURE);
-// type = scraptcha.detectScrap(filename);
-// 
-// switch(type) {
-//   case TRASH: console.log('TRASH!!!\n'); break;
-//   case RECYCLING: console.log('RECYCLING!!!\n'); break;
-//   case COMPOST: console.log('COMPOST!!!\n'); break;
-//   default: break;
-// }
+scraptcha.takePicture(filename, CAPTURE);
+type = scraptcha.detectScrap(filename);
+
+switch(type) {
+  case TRASH: console.log('TRASH!!!\n'); break;
+  case RECYCLING: console.log('RECYCLING!!!\n'); break;
+  case COMPOST: console.log('COMPOST!!!\n'); break;
+  default: break;
+}
 

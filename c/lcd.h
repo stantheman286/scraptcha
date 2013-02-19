@@ -67,7 +67,7 @@ void setBacklight(int fd, uint8_t status);
 void createChar(int, uint8_t, uint8_t[]);
 void setCursor(int, uint8_t, uint8_t); 
 void command(int, uint8_t);
-void write(int, uint8_t);
+void lcdWrite(int, uint8_t);
 void lcdSend(int, uint8_t, uint8_t);
 void write4bits(int, uint8_t);
 void write8bits(int, uint8_t);

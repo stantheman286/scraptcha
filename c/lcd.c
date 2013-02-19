@@ -281,7 +281,7 @@ void createChar(int fd, uint8_t location, uint8_t charmap[]) {
   location &= 0x7; // we only have 8 locations 0-7
   command(fd, LCD_SETCGRAMADDR | (location << 3));
   for (i=0; i<8; i++) {
-    write(fd, charmap[i]);
+    lcdWrite(fd, charmap[i]);
   }
 }
 
@@ -291,7 +291,7 @@ inline void command(int fd, uint8_t value) {
   lcdSend(fd, value, LOW);
 }
 
-inline void write(int fd, uint8_t value) {
+inline void lcdWrite(int fd, uint8_t value) {
   lcdSend(fd, value, HIGH);
 }
 
@@ -363,6 +363,6 @@ void lcdPrint(int fd, const char *s) {
   int i;
 
   for(i = 0; i < strlen(s); i++)
-    write(fd, s[i]);
+    lcdWrite(fd, s[i]);
 
 }
