@@ -1,4 +1,4 @@
-var scraptcha = require('../build/Release/myScraptcha');
+var scraptcha = require('../c/build/Release/myScraptcha');
 
 // Constants
 var TRASH = 0;
