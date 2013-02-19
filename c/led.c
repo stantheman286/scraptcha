@@ -6,18 +6,20 @@
 #include <sys/mman.h>
 #include <string.h>
 #include <inttypes.h>
+#include "wiringPi/wiringPi.h"
 #include "led.h"
 
 //
 // LED test code
 //
-/*int main(int argc, char *argv[]) {
+//int main(int argc, char *argv[]) {
+void ledTest() {
 
-  int g, i, delay;
+  int delay;
 
   // Set delay for all tests
   delay = 250;
-
+  
   // Prepare IO on the Pi
   setup_io();
 
@@ -38,9 +40,8 @@
   // When done, disable the LED bar 
   ledBarDisable();
 
-  return 0;
-
-}*/
+//  return 0;
+}
 
 
 //

@@ -56,6 +56,7 @@ volatile unsigned *gpio;
 #define GREEN     1
 
 // Prototypes
+void ledTest();
 void setup_io();
 void gpioSetPin(uint8_t, uint8_t);
 void gpioWrite(uint8_t, uint8_t);

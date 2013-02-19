@@ -43,23 +43,7 @@ var filename = 'test.jpg';
 var type;
 
 // LED test
-delay = 250;
-
-scraptcha.setup_io;
-
-scraptcha.ledBarEnable;
-
-scraptcha.ledBlockSet(ANODE0, RED, delay);
-scraptcha.ledBlockSet(ANODE1, RED, delay);
-scraptcha.ledBlockSet(ANODE2, RED, delay);
-scraptcha.ledBlockSet(ANODE0, GREEN, delay);
-scraptcha.ledBlockSet(ANODE1, GREEN, delay);
-scraptcha.ledBlockSet(ANODE2, GREEN, delay);
-
-scraptcha.ledScrollSet(delay);
-
-scraptcha.ledBarDisable;
-
+scraptcha.ledTest();
 
 // Webcam test
 // scraptcha.takePicture(filename, CAPTURE);

@@ -11,6 +11,21 @@ extern "C" {
 using namespace v8;
 
 /*
+function name: ledTest 
+inputs:
+	undefined
+returns:
+	undefined
+*/
+Handle<Value> ledTest(const Arguments& args) {
+	HandleScope scope;
+
+  ledTest();
+
+  return scope.Close(Undefined());
+}
+
+/*
 function name: setup_io 
 inputs:
 	undefined
@@ -56,7 +71,7 @@ Handle<Value> gpioSetPin(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  gpioSetPin(pin, dir);
+  gpioSetPin((int32_t)pin, (int32_t)dir);
 
   return scope.Close(Undefined());
 }
@@ -92,7 +107,7 @@ Handle<Value> gpioWrite(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  gpioSetPin(pin, value);
+  gpioSetPin((int32_t)pin, (int32_t)value);
 
   return scope.Close(Undefined());
 }
@@ -132,7 +147,7 @@ Handle<Value> shiftOut(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  shiftOut(anode, bitOrder, value);
+  shiftOut((int32_t)anode, (int32_t)bitOrder, (int32_t)value);
 
   return scope.Close(Undefined());
 }
@@ -230,7 +245,7 @@ Handle<Value> ledScrollSet(const Arguments& args) {
   //unpack args
 	int delay = args[0]->Int32Value();
 
-  ledScrollSet(delay);
+  ledScrollSet((int32_t)delay);
 
   return scope.Close(Undefined());
 }
@@ -318,6 +333,8 @@ Handle<Value> detectScrap(const Arguments& args) {
 }
 
 void Init(Handle<Object> target) {
+	target->Set(String::NewSymbol("ledTest"),
+			FunctionTemplate::New(ledTest)->GetFunction());
 	target->Set(String::NewSymbol("setup_io"),
 			FunctionTemplate::New(setup_io)->GetFunction());
 	target->Set(String::NewSymbol("gpioSetPin"),

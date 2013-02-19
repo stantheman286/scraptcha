@@ -14,7 +14,6 @@ CFLAGS_Debug := \
 	-fPIC \
 	-Wall \
 	-pthread \
-	-m64 \
 	-g \
 	-O0
 
@@ -27,9 +26,9 @@ CFLAGS_CC_Debug := \
 	-fno-exceptions
 
 INCS_Debug := \
-	-I/home/matt/.node-gyp/0.8.17/src \
-	-I/home/matt/.node-gyp/0.8.17/deps/uv/include \
-	-I/home/matt/.node-gyp/0.8.17/deps/v8/include
+	-I/home/pi/.node-gyp/0.8.16/src \
+	-I/home/pi/.node-gyp/0.8.16/deps/uv/include \
+	-I/home/pi/.node-gyp/0.8.16/deps/v8/include
 
 DEFS_Release := \
 	'-D_LARGEFILE_SOURCE' \
@@ -41,7 +40,6 @@ CFLAGS_Release := \
 	-fPIC \
 	-Wall \
 	-pthread \
-	-m64 \
 	-O2 \
 	-fno-strict-aliasing \
 	-fno-tree-vrp
@@ -55,9 +53,9 @@ CFLAGS_CC_Release := \
 	-fno-exceptions
 
 INCS_Release := \
-	-I/home/matt/.node-gyp/0.8.17/src \
-	-I/home/matt/.node-gyp/0.8.17/deps/uv/include \
-	-I/home/matt/.node-gyp/0.8.17/deps/v8/include
+	-I/home/pi/.node-gyp/0.8.16/src \
+	-I/home/pi/.node-gyp/0.8.16/deps/uv/include \
+	-I/home/pi/.node-gyp/0.8.16/deps/v8/include
 
 OBJS := \
 	$(obj).target/$(TARGET)/webcam.o \
@@ -100,13 +98,11 @@ $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.c FORCE_DO_CMD
 ### Rules for final target.
 LDFLAGS_Debug := \
 	-pthread \
-	-rdynamic \
-	-m64
+	-rdynamic
 
 LDFLAGS_Release := \
 	-pthread \
-	-rdynamic \
-	-m64
+	-rdynamic
 
 LIBS :=
 
