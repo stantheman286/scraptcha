@@ -1,0 +1,1 @@
+cmd_Release/myScraptcha.node := ln -f "Release/obj.target/myScraptcha.node" "Release/myScraptcha.node" 2>/dev/null || (rm -rf "Release/myScraptcha.node" && cp -af "Release/obj.target/myScraptcha.node" "Release/myScraptcha.node")
