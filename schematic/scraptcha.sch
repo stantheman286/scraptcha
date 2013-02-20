@@ -12859,6 +12859,62 @@ BF959 corrected 2008.03.06&lt;br&gt;</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="frames">
+<description>&lt;b&gt;Frames for Sheet and Layout&lt;/b&gt;</description>
+<packages>
+</packages>
+<symbols>
+<symbol name="LETTER_L">
+<frame x1="0" y1="0" x2="248.92" y2="185.42" columns="12" rows="17" layer="94" border-left="no" border-top="no" border-right="no" border-bottom="no"/>
+</symbol>
+<symbol name="DOCFIELD">
+<wire x1="0" y1="0" x2="71.12" y2="0" width="0.1016" layer="94"/>
+<wire x1="101.6" y1="15.24" x2="87.63" y2="15.24" width="0.1016" layer="94"/>
+<wire x1="0" y1="0" x2="0" y2="5.08" width="0.1016" layer="94"/>
+<wire x1="0" y1="5.08" x2="71.12" y2="5.08" width="0.1016" layer="94"/>
+<wire x1="0" y1="5.08" x2="0" y2="15.24" width="0.1016" layer="94"/>
+<wire x1="101.6" y1="15.24" x2="101.6" y2="5.08" width="0.1016" layer="94"/>
+<wire x1="71.12" y1="5.08" x2="71.12" y2="0" width="0.1016" layer="94"/>
+<wire x1="71.12" y1="5.08" x2="87.63" y2="5.08" width="0.1016" layer="94"/>
+<wire x1="71.12" y1="0" x2="101.6" y2="0" width="0.1016" layer="94"/>
+<wire x1="87.63" y1="15.24" x2="87.63" y2="5.08" width="0.1016" layer="94"/>
+<wire x1="87.63" y1="15.24" x2="0" y2="15.24" width="0.1016" layer="94"/>
+<wire x1="87.63" y1="5.08" x2="101.6" y2="5.08" width="0.1016" layer="94"/>
+<wire x1="101.6" y1="5.08" x2="101.6" y2="0" width="0.1016" layer="94"/>
+<wire x1="0" y1="15.24" x2="0" y2="22.86" width="0.1016" layer="94"/>
+<wire x1="101.6" y1="35.56" x2="0" y2="35.56" width="0.1016" layer="94"/>
+<wire x1="101.6" y1="35.56" x2="101.6" y2="22.86" width="0.1016" layer="94"/>
+<wire x1="0" y1="22.86" x2="101.6" y2="22.86" width="0.1016" layer="94"/>
+<wire x1="0" y1="22.86" x2="0" y2="35.56" width="0.1016" layer="94"/>
+<wire x1="101.6" y1="22.86" x2="101.6" y2="15.24" width="0.1016" layer="94"/>
+<text x="1.27" y="1.27" size="2.54" layer="94" font="vector">Date:</text>
+<text x="12.7" y="1.27" size="2.54" layer="94" font="vector">&gt;LAST_DATE_TIME</text>
+<text x="72.39" y="1.27" size="2.54" layer="94" font="vector">Sheet:</text>
+<text x="86.36" y="1.27" size="2.54" layer="94" font="vector">&gt;SHEET</text>
+<text x="88.9" y="11.43" size="2.54" layer="94" font="vector">REV:</text>
+<text x="1.27" y="19.05" size="2.54" layer="94" font="vector">TITLE:</text>
+<text x="1.27" y="11.43" size="2.54" layer="94" font="vector">Document Number:</text>
+<text x="17.78" y="19.05" size="2.54" layer="94" font="vector">&gt;DRAWING_NAME</text>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="LETTER_L" prefix="FRAME" uservalue="yes">
+<description>&lt;b&gt;FRAME&lt;/b&gt;&lt;p&gt;
+LETTER landscape</description>
+<gates>
+<gate name="G$1" symbol="LETTER_L" x="0" y="0"/>
+<gate name="G$2" symbol="DOCFIELD" x="147.32" y="0" addlevel="must"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -12915,18 +12971,19 @@ BF959 corrected 2008.03.06&lt;br&gt;</description>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="C2" library="adafruit" deviceset="C-US" device="C0805K" value="0.1uF"/>
 <part name="U1" library="scraptcha" deviceset="PI_COBBLER" device=""/>
-<part name="R8" library="adafruit" deviceset="R-US_" device="0204/5" value="33ohm"/>
-<part name="R9" library="adafruit" deviceset="R-US_" device="0204/5" value="33ohm"/>
-<part name="R10" library="adafruit" deviceset="R-US_" device="0204/5" value="33ohm"/>
+<part name="R8" library="adafruit" deviceset="R-US_" device="0204/5" value="100ohm"/>
+<part name="R9" library="adafruit" deviceset="R-US_" device="0204/5" value="100ohm"/>
+<part name="R10" library="adafruit" deviceset="R-US_" device="0204/5" value="100ohm"/>
 <part name="5V)" library="supply1" deviceset="VCC" device="" value="5V0"/>
-<part name="P+13" library="supply1" deviceset="VCC" device="" value="3V3"/>
-<part name="P+14" library="supply1" deviceset="VCC" device="" value="3V3"/>
-<part name="P+15" library="supply1" deviceset="VCC" device="" value="3V3"/>
+<part name="P+13" library="supply1" deviceset="VCC" device="" value="5V0"/>
+<part name="P+14" library="supply1" deviceset="VCC" device="" value="5V0"/>
+<part name="P+15" library="supply1" deviceset="VCC" device="" value="5V0"/>
 <part name="P+16" library="supply1" deviceset="VCC" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="P+12" library="supply1" deviceset="VCC" device="" value="3V3"/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="GND13" library="supply1" deviceset="GND" device=""/>
+<part name="FRAME1" library="frames" deviceset="LETTER_L" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -12943,6 +13000,14 @@ BF959 corrected 2008.03.06&lt;br&gt;</description>
 <wire x1="40.64" y1="81.28" x2="10.16" y2="81.28" width="0.1524" layer="94"/>
 <text x="25.4" y="68.58" size="2.54" layer="96" align="center">Logitech C310
 Webcam</text>
+<wire x1="-233.68" y1="109.22" x2="157.48" y2="109.22" width="0.1524" layer="94"/>
+<wire x1="157.48" y1="109.22" x2="157.48" y2="-157.48" width="0.1524" layer="94"/>
+<wire x1="157.48" y1="-157.48" x2="-233.68" y2="-157.48" width="0.1524" layer="94"/>
+<wire x1="-233.68" y1="-157.48" x2="-233.68" y2="109.22" width="0.1524" layer="94"/>
+<text x="58.42" y="-129.54" size="2.54" layer="94">Engineer: Matt Staniszewski</text>
+<text x="-137.16" y="91.44" size="6.4516" layer="94">LCD</text>
+<text x="-88.9" y="-121.92" size="6.4516" layer="94">LEDs</text>
+<text x="7.62" y="86.36" size="6.4516" layer="94">Webcam</text>
 </plain>
 <instances>
 <instance part="X1" gate="G$1" x="-35.56" y="-7.62"/>
@@ -13027,6 +13092,7 @@ Webcam</text>
 </instance>
 <instance part="GND12" gate="1" x="81.28" y="-71.12"/>
 <instance part="GND13" gate="1" x="127" y="-71.12"/>
+<instance part="FRAME1" gate="G$2" x="55.88" y="-157.48"/>
 </instances>
 <busses>
 <bus name="RS,E,DB4,DB5,DB6,DB7,LITE">
