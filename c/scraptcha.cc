@@ -31,7 +31,7 @@ Handle<Value> lcdTest(const Arguments& args) {
 }
 
 /*
-function name: setup 
+function name: lcdSetup 
 inputs:
 	args[0]: fd
   args[1]: data
@@ -40,7 +40,7 @@ inputs:
 returns:
 	undefined
 */
-Handle<Value> setup(const Arguments& args) {
+Handle<Value> lcdSetup(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -65,13 +65,13 @@ Handle<Value> setup(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  setup((int32_t)fd, (int32_t)data, (int32_t)clock, (int32_t)latch);
+  lcdSetup((int32_t)fd, (int32_t)data, (int32_t)clock, (int32_t)latch);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: begin 
+function name: lcdBegin 
 inputs:
 	args[0]: fd
   args[1]: columns
@@ -80,7 +80,7 @@ inputs:
 returns:
 	undefined
 */
-Handle<Value> begin(const Arguments& args) {
+Handle<Value> lcdBegin(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -105,19 +105,19 @@ Handle<Value> begin(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  begin((int32_t)fd, (int32_t)cols, (int32_t)lines, (int32_t)dotsize);
+  lcdBegin((int32_t)fd, (int32_t)cols, (int32_t)lines, (int32_t)dotsize);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: clear 
+function name: lcdClear 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> clear(const Arguments& args) {
+Handle<Value> lcdClear(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -139,19 +139,19 @@ Handle<Value> clear(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  clear((int32_t)fd);
+  lcdClear((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: home 
+function name: lcdHome 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> home(const Arguments& args) {
+Handle<Value> lcdHome(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -173,13 +173,13 @@ Handle<Value> home(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  home((int32_t)fd);
+  lcdHome((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: setCursor
+function name: lcdSetCursor
 inputs:
 	args[0]: fd
   args[1]: column
@@ -187,7 +187,7 @@ inputs:
 returns:
 	undefined
 */
-Handle<Value> setCursor(const Arguments& args) {
+Handle<Value> lcdSetCursor(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -211,19 +211,19 @@ Handle<Value> setCursor(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  setCursor((int32_t)fd, (int32_t)col, (int32_t)row);
+  lcdSetCursor((int32_t)fd, (int32_t)col, (int32_t)row);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: noDisplay 
+function name: lcdNoDisplay 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> noDisplay(const Arguments& args) {
+Handle<Value> lcdNoDisplay(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -245,19 +245,19 @@ Handle<Value> noDisplay(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  noDisplay((int32_t)fd);
+  lcdNoDisplay((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: display
+function name: lcdDisplay
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> display(const Arguments& args) {
+Handle<Value> lcdDisplay(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -279,19 +279,19 @@ Handle<Value> display(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  display((int32_t)fd);
+  lcdDisplay((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: noCursor
+function name: lcdNoCursor
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> noCursor(const Arguments& args) {
+Handle<Value> lcdNoCursor(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -313,19 +313,19 @@ Handle<Value> noCursor(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  noCursor((int32_t)fd);
+  lcdNoCursor((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: cursor 
+function name: lcdCursor 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> cursor(const Arguments& args) {
+Handle<Value> lcdCursor(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -347,19 +347,19 @@ Handle<Value> cursor(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  cursor((int32_t)fd);
+  lcdCursor((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: noBlink 
+function name: lcdNoBlink 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> noBlink(const Arguments& args) {
+Handle<Value> lcdNoBlink(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -381,19 +381,19 @@ Handle<Value> noBlink(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  noBlink((int32_t)fd);
+  lcdNoBlink((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: blink 
+function name: lcdBlink 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> blink(const Arguments& args) {
+Handle<Value> lcdBlink(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -415,19 +415,19 @@ Handle<Value> blink(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  blink((int32_t)fd);
+  lcdBlink((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: scrollDisplayLeft 
+function name: lcdScrollDisplayLeft 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> scrollDisplayLeft(const Arguments& args) {
+Handle<Value> lcdScrollDisplayLeft(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -449,19 +449,19 @@ Handle<Value> scrollDisplayLeft(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  scrollDisplayLeft((int32_t)fd);
+  lcdScrollDisplayLeft((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: scrollDisplayRight
+function name: lcdScrollDisplayRight
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> scrollDisplayRight(const Arguments& args) {
+Handle<Value> lcdScrollDisplayRight(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -483,19 +483,19 @@ Handle<Value> scrollDisplayRight(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  scrollDisplayRight((int32_t)fd);
+  lcdScrollDisplayRight((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: leftToRight
+function name: lcdLeftToRight
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> leftToRight(const Arguments& args) {
+Handle<Value> lcdLeftToRight(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -517,19 +517,19 @@ Handle<Value> leftToRight(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  leftToRight((int32_t)fd);
+  lcdLeftToRight((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: rightToLeft 
+function name: lcdRightToLeft 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> rightToLeft(const Arguments& args) {
+Handle<Value> lcdRightToLeft(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -551,19 +551,19 @@ Handle<Value> rightToLeft(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  rightToLeft((int32_t)fd);
+  lcdRightToLeft((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: autoscroll 
+function name: lcdAutoscroll 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> autoscroll(const Arguments& args) {
+Handle<Value> lcdAutoscroll(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -585,19 +585,19 @@ Handle<Value> autoscroll(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  autoscroll((int32_t)fd);
+  lcdAutoscroll((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: noAutoscroll 
+function name: lcdNoAutoscroll 
 inputs:
   args[0]: fd
 returns:
 	undefined
 */
-Handle<Value> noAutoscroll(const Arguments& args) {
+Handle<Value> lcdNoAutoscroll(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -619,13 +619,13 @@ Handle<Value> noAutoscroll(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  noAutoscroll((int32_t)fd);
+  lcdNoAutoscroll((int32_t)fd);
 
   return scope.Close(Undefined());
 }
 
 /*
-function name: createChar
+function name: lcdCreateChar
 inputs:
 	args[0]: fd
   args[1]: location
@@ -665,14 +665,14 @@ returns:
 //ms: fix, see Array in nodeSPI }
 
 /*
-function name: setBacklight
+function name: lcdSetBacklight
 inputs:
 	args[0]: fd
   args[1]: status
 returns:
 	undefined
 */
-Handle<Value> setBacklight(const Arguments& args) {
+Handle<Value> lcdSetBacklight(const Arguments& args) {
 	HandleScope scope;
 
 	//Check inputs
@@ -695,7 +695,7 @@ Handle<Value> setBacklight(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  setBacklight((int32_t)fd, (int32_t)status);
+  lcdSetBacklight((int32_t)fd, (int32_t)status);
 
   return scope.Close(Undefined());
 }
@@ -1063,44 +1063,44 @@ Handle<Value> detectScrap(const Arguments& args) {
 void Init(Handle<Object> target) {
 	target->Set(String::NewSymbol("lcdTest"),
 			FunctionTemplate::New(lcdTest)->GetFunction());
-	target->Set(String::NewSymbol("setup"),
-			FunctionTemplate::New(setup)->GetFunction());
-	target->Set(String::NewSymbol("begin"),
-			FunctionTemplate::New(begin)->GetFunction());
-	target->Set(String::NewSymbol("clear"),
-			FunctionTemplate::New(clear)->GetFunction());
-	target->Set(String::NewSymbol("home"),
-			FunctionTemplate::New(home)->GetFunction());
-	target->Set(String::NewSymbol("setCursor"),
-			FunctionTemplate::New(setCursor)->GetFunction());
-	target->Set(String::NewSymbol("noDisplay"),
-			FunctionTemplate::New(noDisplay)->GetFunction());
-	target->Set(String::NewSymbol("display"),
-			FunctionTemplate::New(display)->GetFunction());
-	target->Set(String::NewSymbol("noCursor"),
-			FunctionTemplate::New(noCursor)->GetFunction());
-	target->Set(String::NewSymbol("cursor"),
-			FunctionTemplate::New(cursor)->GetFunction());
-	target->Set(String::NewSymbol("noBlink"),
-			FunctionTemplate::New(noBlink)->GetFunction());
-	target->Set(String::NewSymbol("blink"),
-			FunctionTemplate::New(blink)->GetFunction());
-	target->Set(String::NewSymbol("scrollDisplayLeft"),
-			FunctionTemplate::New(scrollDisplayLeft)->GetFunction());
-	target->Set(String::NewSymbol("scrollDisplayRight"),
-			FunctionTemplate::New(scrollDisplayRight)->GetFunction());
-	target->Set(String::NewSymbol("leftToRight"),
-			FunctionTemplate::New(leftToRight)->GetFunction());
-	target->Set(String::NewSymbol("rightToLeft"),
-			FunctionTemplate::New(rightToLeft)->GetFunction());
-	target->Set(String::NewSymbol("autoscroll"),
-			FunctionTemplate::New(autoscroll)->GetFunction());
-	target->Set(String::NewSymbol("noAutoscroll"),
-			FunctionTemplate::New(noAutoscroll)->GetFunction());
-//ms 	target->Set(String::NewSymbol("createChar"),
-//ms 			FunctionTemplate::New(createChar)->GetFunction());
-	target->Set(String::NewSymbol("setBacklight"),
-			FunctionTemplate::New(setBacklight)->GetFunction());
+	target->Set(String::NewSymbol("lcdSetup"),
+			FunctionTemplate::New(lcdSetup)->GetFunction());
+	target->Set(String::NewSymbol("lcdBegin"),
+			FunctionTemplate::New(lcdBegin)->GetFunction());
+	target->Set(String::NewSymbol("lcdClear"),
+			FunctionTemplate::New(lcdClear)->GetFunction());
+	target->Set(String::NewSymbol("lcdHome"),
+			FunctionTemplate::New(lcdHome)->GetFunction());
+	target->Set(String::NewSymbol("lcdSetCursor"),
+			FunctionTemplate::New(lcdSetCursor)->GetFunction());
+	target->Set(String::NewSymbol("lcdNoDisplay"),
+			FunctionTemplate::New(lcdNoDisplay)->GetFunction());
+	target->Set(String::NewSymbol("lcdDisplay"),
+			FunctionTemplate::New(lcdDisplay)->GetFunction());
+	target->Set(String::NewSymbol("lcdNoCursor"),
+			FunctionTemplate::New(lcdNoCursor)->GetFunction());
+	target->Set(String::NewSymbol("lcdCursor"),
+			FunctionTemplate::New(lcdCursor)->GetFunction());
+	target->Set(String::NewSymbol("lcdNoBlink"),
+			FunctionTemplate::New(lcdNoBlink)->GetFunction());
+	target->Set(String::NewSymbol("lcdBlink"),
+			FunctionTemplate::New(lcdBlink)->GetFunction());
+	target->Set(String::NewSymbol("lcdScrollDisplayLeft"),
+			FunctionTemplate::New(lcdScrollDisplayLeft)->GetFunction());
+	target->Set(String::NewSymbol("lcdScrollDisplayRight"),
+			FunctionTemplate::New(lcdScrollDisplayRight)->GetFunction());
+	target->Set(String::NewSymbol("lcdLeftToRight"),
+			FunctionTemplate::New(lcdLeftToRight)->GetFunction());
+	target->Set(String::NewSymbol("lcdRightToLeft"),
+			FunctionTemplate::New(lcdRightToLeft)->GetFunction());
+	target->Set(String::NewSymbol("lcdAutoscroll"),
+			FunctionTemplate::New(lcdAutoscroll)->GetFunction());
+	target->Set(String::NewSymbol("lcdNoAutoscroll"),
+			FunctionTemplate::New(lcdNoAutoscroll)->GetFunction());
+//ms 	target->Set(String::NewSymbol("lcdCreateChar"),
+//ms 			FunctionTemplate::New(lcdCreateChar)->GetFunction());
+	target->Set(String::NewSymbol("lcdSetBacklight"),
+			FunctionTemplate::New(lcdSetBacklight)->GetFunction());
 	target->Set(String::NewSymbol("lcdPrint"),
 			FunctionTemplate::New(lcdPrint)->GetFunction());
 
