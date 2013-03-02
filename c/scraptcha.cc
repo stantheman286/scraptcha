@@ -835,7 +835,7 @@ Handle<Value> gpioWrite(const Arguments& args) {
 		return scope.Close(Undefined());
 	}
 
-  gpioSetPin((int32_t)pin, (int32_t)value);
+  gpioWrite((int32_t)pin, (int32_t)value);
 
   return scope.Close(Undefined());
 }
@@ -868,9 +868,9 @@ Handle<Value> shiftOut(const Arguments& args) {
 	int bitOrder = args[1]->Int32Value();
 	int value = args[2]->Int32Value();
 
-	if (((anode != ANODE0) && (anode != ANODE1) || (anode != ANODE2)) || 
+	if (((anode != ANODE0) && (anode != ANODE1) && (anode != ANODE2)) || 
       ((bitOrder != LSBFIRST) && (bitOrder != MSBFIRST)) ||
-      ((value != LOW) && (value != HIGH))){
+      (value < 0x00) || (value > 0xFF)){
 		ThrowException(Exception::Error(String::New("Invalid GPIO settings")));
 		return scope.Close(Undefined());
 	}

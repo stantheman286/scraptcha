@@ -26,9 +26,9 @@ CFLAGS_CC_Debug := \
 	-fno-exceptions
 
 INCS_Debug := \
-	-I/home/pi/.node-gyp/0.8.16/src \
-	-I/home/pi/.node-gyp/0.8.16/deps/uv/include \
-	-I/home/pi/.node-gyp/0.8.16/deps/v8/include
+	-I/root/.node-gyp/0.8.16/src \
+	-I/root/.node-gyp/0.8.16/deps/uv/include \
+	-I/root/.node-gyp/0.8.16/deps/v8/include
 
 DEFS_Release := \
 	'-D_LARGEFILE_SOURCE' \
@@ -53,9 +53,9 @@ CFLAGS_CC_Release := \
 	-fno-exceptions
 
 INCS_Release := \
-	-I/home/pi/.node-gyp/0.8.16/src \
-	-I/home/pi/.node-gyp/0.8.16/deps/uv/include \
-	-I/home/pi/.node-gyp/0.8.16/deps/v8/include
+	-I/root/.node-gyp/0.8.16/src \
+	-I/root/.node-gyp/0.8.16/deps/uv/include \
+	-I/root/.node-gyp/0.8.16/deps/v8/include
 
 OBJS := \
 	$(obj).target/$(TARGET)/wiringPi/wiringPi.o \

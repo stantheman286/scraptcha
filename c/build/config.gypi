@@ -26,7 +26,7 @@
     "v8_no_strict_aliasing": 1,
     "v8_use_arm_eabi_hardfloat": "true",
     "v8_use_snapshot": "true",
-    "nodedir": "/home/pi/.node-gyp/0.8.16",
+    "nodedir": "/root/.node-gyp/0.8.16",
     "copy_dev_lib": "true"
   }
 }
