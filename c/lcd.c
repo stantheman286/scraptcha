@@ -27,6 +27,20 @@
 //int main(int argc, char *argv[]) {
 int lcdTest() {
 
+  int fd;
+
+  // Run init sequence and get descriptor
+  fd = lcdStart();
+
+  // Print a message to the LCD.
+  lcdPrint(fd, "hello, world!");
+
+  return 0;
+}
+
+// Starts the LCD to make it ready for use
+int lcdStart() {
+  
   int fd = open("/dev/spidev0.1", O_RDWR);
 
   if (fd < 0) {
@@ -43,19 +57,8 @@ int lcdTest() {
   
   // set up the LCD's number of rows and columns: 
   lcdBegin(fd, 16, 2, LCD_5x8DOTS);
-  // Print a message to the LCD.
-  lcdPrint(fd, "hello, world!");
  
-  // Kill text and backlight if not using
-//  if ((argc == 2) && (strcmp(argv[1], "--off") == 0)) {
-//    lcdNolcdDisplay(fd);
-//    lcdSetBacklight(fd, LOW);
-//  }
-
-//  while(1)
-//    loop(fd);
-  
-  return 0;
+  return fd;
 
 }
 

@@ -31,6 +31,30 @@ Handle<Value> lcdTest(const Arguments& args) {
 }
 
 /*
+function name: lcdStart 
+inputs:
+	undefined
+returns:
+	undefined
+*/
+Handle<Value> lcdStart(const Arguments& args) {
+	HandleScope scope;
+  int temp;
+  Local<Integer> result;
+
+  temp = lcdStart();
+  if (temp < 0) {
+		ThrowException(
+			Exception::Error(String::New("LCD initialization returned invalid descriptor")));
+		return scope.Close(Undefined());
+	}
+
+  // wrap outputs
+  result = Integer::New(temp);
+	return scope.Close(result);
+}
+
+/*
 function name: lcdSetup 
 inputs:
 	args[0]: fd
@@ -1063,6 +1087,8 @@ Handle<Value> detectScrap(const Arguments& args) {
 void Init(Handle<Object> target) {
 	target->Set(String::NewSymbol("lcdTest"),
 			FunctionTemplate::New(lcdTest)->GetFunction());
+	target->Set(String::NewSymbol("lcdStart"),
+			FunctionTemplate::New(lcdStart)->GetFunction());
 	target->Set(String::NewSymbol("lcdSetup"),
 			FunctionTemplate::New(lcdSetup)->GetFunction());
 	target->Set(String::NewSymbol("lcdBegin"),
